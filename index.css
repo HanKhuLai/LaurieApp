@@ -36,6 +36,16 @@ header{
     border: solid thin black;
 }
 
+.dayIcon{
+    fill: black;
+    width: 20px;
+    height: auto;
+    aspect-ratio: 1/1;
+    padding: 5px;
+    border-radius: 50%;
+    border: solid thin black;
+}
+
 .calendrier ul{
     display: flex;
     flex-wrap: wrap;
