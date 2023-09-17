@@ -21,6 +21,10 @@ header{
     margin: 2rem 10rem;
 }
 
+.calendrier{
+    margin: 2rem 10rem;
+}
+
 .row{
     display: flex;
     justify-content: space-between;
@@ -56,5 +60,10 @@ header{
 .calendrier li{
     color: #333;
     width: calc(100% / 7);
+    aspect-ratio: 1/1;
     font-size: 1,07rem;
+}
+
+.inactive{
+    color: lightgray !important;
 }
