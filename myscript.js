@@ -1,6 +1,6 @@
 let tagJours = document.getElementById("jours");
-let annéeSelec = document.getElementById("annéeSelec");
-let moisSelec = document.getElementById("moisSelec");
+let annéeSelector = document.getElementById("annéeSelec");
+let moisSelector = document.getElementById("moisSelec");
 
 let date = new Date();
 let annéeAffichée = date.getFullYear();
@@ -21,7 +21,12 @@ const mois = [
         {Id:11, Name:"Décembre"}
     ]
 
-const genererCalendrier = () => {
+
+
+genererCalendrier();
+const testLS = localStorage.getItem("test");
+
+function genererCalendrier() {
     let listJours = "";
     //Mois actuel  
     let premierJourMois = new Date(annéeAffichée, moisAffiché, 1).getDay();
@@ -35,50 +40,76 @@ const genererCalendrier = () => {
     let dernierJourNbrMoisPrecedent = new Date(annéeAffichée, moisAffiché, 0).getDate();
 
     //On construit les jours du mois précedent
-        //ici on fait -1 car notre semaine commence le lundi et non le dimanche
+        //ici on fait +2 car notre semaine commence le lundi et non le dimanche
+    let idPartPre = annéeAffichée + "_" + (moisAffiché - 1) + "_";
+    if (moisAffiché == 0)
+        idPartPre = (annéeAffichée - 1) + "_" + 11 + "_";
     for(let i = premierJourMois; i > 1; i--){
-        listJours += '<li class="inactive">' + (dernierJourNbrMoisPrecedent - i + 2) + "</li>";
+        let numJourCase = (dernierJourNbrMoisPrecedent - i + 2);
+        listJours += '<li id="' + idPartPre + numJourCase +'" class="inactive">' + numJourCase + "</li>";
     }
-
+    
     //On construit les jours du mois en cours
+    let idPart = annéeAffichée + "_" + moisAffiché + "_";
     for(let i = 1; i <= dernierJourNbrMois; i++){
-        listJours += '<li onClick="changeBGC(this)">' + i + "</li>";
+        let numJourCase = i;
+        listJours += '<li id="'+ idPart + numJourCase +'" onClick="changeBGC(this)">' + numJourCase + "</li>";
     }
-
+    
     //On construit les jours du mois à venir
+    let idPartNext = annéeAffichée + "_" + (moisAffiché + 1) + "_";
+    if (moisAffiché == 11)
+        idPartNext = (annéeAffichée + 1) + "_" + 0 + "_";
     for(let i = dernierJourMois; i < 7; i++){
-        listJours += '<li class="inactive">' + (i - dernierJourMois + 1) + "</li>";
+        let numJourCase = (i - dernierJourMois + 1);
+        listJours += '<li id="' + idPartNext + numJourCase +'" class="inactive">' + numJourCase + "</li>";
     }
 
-    annéeSelec.innerText = annéeAffichée;
-    moisSelec.innerText = mois.find(x=> x.Id === moisAffiché).Name;
+    //On met à jour les données à afficher.
+    changeTextWithTransition(annéeSelector, annéeAffichée);
+    changeTextWithTransition(moisSelector, mois.find(x=> x.Id === moisAffiché).Name);
     tagJours.innerHTML = listJours;
 }
-genererCalendrier();
+
+function changeTextWithTransition(elem, textToDisplay) {
+    elem.style.opacity = 0;
+    setTimeout(() => {
+        elem.innerHTML = textToDisplay;
+        elem.style.opacity = 1;
+    }, 200); // Attendre pour que l'opacité atteigne 0 avant de changer le texte
+}
 
 function changeBGC(elem){
-    if(elem.style.backgroundColor == "")
-        elem.style.backgroundColor = "darkgrey";
+    if(elem.style.boxShadow == ""){
+        elem.style.boxShadow = "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset";
+        localStorage.setItem(elem.id, "sport")
+    }
     else
-        elem.style.backgroundColor = "";
+        elem.style.boxShadow = "";
 }
 
 function prevYear(elem){
-    annéeAffichée = parseInt(annéeSelec.innerText) - 1;
+    annéeAffichée = parseInt(annéeSelector.innerHTML) - 1;
     genererCalendrier();
 }
 
 function nextYear(elem){
-    annéeAffichée = parseInt(annéeSelec.innerText) + 1;
+    annéeAffichée = parseInt(annéeSelector.innerHTML) + 1;
     genererCalendrier();
 }
 
 function prevMonth(elem){
-    moisAffiché = mois.find(x=> x.Name === moisSelec.innerText).Id - 1;
+    if (moisAffiché == 0)
+        moisAffiché = 11;
+    else   
+        moisAffiché = mois.find(x=> x.Name === moisSelector.innerHTML).Id - 1;
     genererCalendrier();
 }
 
 function nextMonth(elem){
-    moisAffiché = mois.find(x=> x.Name === moisSelec.innerText).Id + 1
+    if (moisAffiché == 11)
+        moisAffiché = 0;
+    else
+        moisAffiché = mois.find(x=> x.Name === moisSelector.innerHTML).Id + 1;
     genererCalendrier();
 }

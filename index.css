@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Rubik', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 html, body{
@@ -28,18 +28,25 @@ header{
 .row{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.fade {
+    opacity: 0;
+    transition: opacity 0.2s linear;
 }
 
 .chevron{
     fill: black;
-    width: 20px;
+    width: 30px;
     height: auto;
     aspect-ratio: 1/1;
     padding: 5px;
-    border-radius: 50%;
-    border: solid thin black;
+    border-radius: 20%;
     cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
+
 
 .dayIcon{
     fill: black;
