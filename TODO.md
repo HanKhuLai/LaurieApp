@@ -7,7 +7,6 @@
 
 
 
-
 # Technique A Régler :
 
 [Js]
@@ -17,11 +16,10 @@
     - Optimiser/Améliorer/Nettoyer code
 
 
-[HTML]
-    - Remplacer les listes par du flex/grid ?
-
 
 [Ergo]
+[HTML]
+    - Remplacer les listes par du flex/grid ?
     - Améliorer CSS
     - Séparer les box des jours pour pouvoir avoir des borders arrondies
     - Responsive !
