@@ -7,24 +7,32 @@ let annéeAffichée = date.getFullYear();
 let moisAffiché = date.getMonth();
 
 const mois = [
-        {Id:0, Name:"Janvier"}, 
-        {Id:1, Name:"Février"}, 
-        {Id:2, Name:"Mars"}, 
-        {Id:3, Name:"Avril"}, 
-        {Id:4, Name:"Mai"}, 
-        {Id:5, Name:"Juin"}, 
-        {Id:6, Name:"Juillet"}, 
-        {Id:7, Name:"Août"}, 
-        {Id:8, Name:"Septembre"}, 
-        {Id:9, Name:"Octobre"}, 
-        {Id:10, Name:"Novembre"},
-        {Id:11, Name:"Décembre"}
-    ]
+    {Id:0, Name:"Janvier"}, 
+    {Id:1, Name:"Février"}, 
+    {Id:2, Name:"Mars"}, 
+    {Id:3, Name:"Avril"}, 
+    {Id:4, Name:"Mai"}, 
+    {Id:5, Name:"Juin"}, 
+    {Id:6, Name:"Juillet"}, 
+    {Id:7, Name:"Août"}, 
+    {Id:8, Name:"Septembre"}, 
+    {Id:9, Name:"Octobre"}, 
+    {Id:10, Name:"Novembre"},
+    {Id:11, Name:"Décembre"}
+]
 
+    
+//Generation header
+annéeSelector.innerHTML = annéeAffichée;
+moisSelector.innerHTML = mois.find(x=> x.Id === moisAffiché).Name;
 
-
+//Generation calendrier
 genererCalendrier();
+
+//Gestion de la localStorage
 const testLS = localStorage.getItem("test");
+
+
 
 function genererCalendrier() {
     let listJours = "";
@@ -66,8 +74,6 @@ function genererCalendrier() {
     }
 
     //On met à jour les données à afficher.
-    changeTextWithTransition(annéeSelector, annéeAffichée);
-    changeTextWithTransition(moisSelector, mois.find(x=> x.Id === moisAffiché).Name);
     tagJours.innerHTML = listJours;
 }
 
@@ -91,11 +97,13 @@ function changeBGC(elem){
 function prevYear(elem){
     annéeAffichée = parseInt(annéeSelector.innerHTML) - 1;
     genererCalendrier();
+    changeTextWithTransition(annéeSelector, annéeAffichée);
 }
 
 function nextYear(elem){
     annéeAffichée = parseInt(annéeSelector.innerHTML) + 1;
     genererCalendrier();
+    changeTextWithTransition(annéeSelector, annéeAffichée);
 }
 
 function prevMonth(elem){
@@ -104,6 +112,7 @@ function prevMonth(elem){
     else   
         moisAffiché = mois.find(x=> x.Name === moisSelector.innerHTML).Id - 1;
     genererCalendrier();
+    changeTextWithTransition(moisSelector, mois.find(x=> x.Id === moisAffiché).Name);
 }
 
 function nextMonth(elem){
@@ -112,4 +121,5 @@ function nextMonth(elem){
     else
         moisAffiché = mois.find(x=> x.Name === moisSelector.innerHTML).Id + 1;
     genererCalendrier();
+    changeTextWithTransition(moisSelector, mois.find(x=> x.Id === moisAffiché).Name);
 }
