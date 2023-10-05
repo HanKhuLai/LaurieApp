@@ -1,10 +1,16 @@
-let tagJours = document.getElementById("jours");
+const shadowColorGrey = "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset"
+const ColorBlue = "rgba(3, 102, 214, 0.3)"
+
+let listJoursSelector = document.getElementById("jours");
 let annéeSelector = document.getElementById("annéeSelec");
 let moisSelector = document.getElementById("moisSelec");
 
 let date = new Date();
-let annéeAffichée = date.getFullYear();
+let today = date.getDate();
 let moisAffiché = date.getMonth();
+let annéeAffichée = date.getFullYear();
+
+let todaysDate = today.toString() + moisAffiché.toString() + annéeAffichée.toString();
 
 const mois = [
     {Id:0, Name:"Janvier"}, 
@@ -29,9 +35,26 @@ moisSelector.innerHTML = mois.find(x=> x.Id === moisAffiché).Name;
 //Generation calendrier
 genererCalendrier();
 
+highLightToday();
+
 //Gestion de la localStorage
 const testLS = localStorage.getItem("test");
 
+
+
+function highLightToday() {
+
+    let days = listJoursSelector.children;
+
+    for (const day of days){
+        if (!day.classList.contains('inactive')){
+            if (day.id === todaysDate){
+                day.style.border = "solid medium " + ColorBlue;
+            }
+        }
+    }
+
+}
 
 
 function genererCalendrier() {
@@ -49,32 +72,32 @@ function genererCalendrier() {
 
     //On construit les jours du mois précedent
         //ici on fait +2 car notre semaine commence le lundi et non le dimanche
-    let idPartPre = (moisAffiché - 1) + "" + annéeAffichée;
+    let idPartPre = (moisAffiché - 1).toString() + annéeAffichée.toString();
     if (moisAffiché == 0)
-        idPartPre = 11 + "" + (annéeAffichée - 1);
+        idPartPre = 11 + (annéeAffichée - 1).toString();
     for(let i = premierJourMois; i > 1; i--){
         let numJourCase = (dernierJourNbrMoisPrecedent - i + 2);
-        listJours += '<li id="' + numJourCase + idPartPre + '" class="inactive">' + numJourCase + "</li>";
+        listJours += '<li id="' + numJourCase.toString() + idPartPre + '" class="inactive">' + numJourCase + "</li>";
     }
     
     //On construit les jours du mois en cours
-    let idPart = moisAffiché + "" + annéeAffichée;
+    let idPart = moisAffiché.toString() + annéeAffichée.toString();
     for(let i = 1; i <= dernierJourNbrMois; i++){
         let numJourCase = i;
-        listJours += '<li id="' + numJourCase + idPart + '" onClick="changeBGC(this)">' + numJourCase + "</li>";
+        listJours += '<li id="' + numJourCase.toString() + idPart.toString() + '" onClick="changeBGC(this)">' + numJourCase + "</li>";
     }
     
     //On construit les jours du mois à venir
-    let idPartNext = (moisAffiché + 1) + "" + annéeAffichée;
+    let idPartNext = (moisAffiché + 1).toString() + annéeAffichée.toString();
     if (moisAffiché == 11)
-        idPartNext = 0 + "" + (annéeAffichée + 1);
+        idPartNext = 0 + toString(annéeAffichée + 1);
     for(let i = dernierJourMois; i < 7; i++){
         let numJourCase = (i - dernierJourMois + 1);
-        listJours += '<li id="' + numJourCase + idPartNext +'" class="inactive">' + numJourCase + "</li>";
+        listJours += '<li id="' + numJourCase.toString() + idPartNext +'" class="inactive">' + numJourCase + "</li>";
     }
 
     //On met à jour les données à afficher.
-    tagJours.innerHTML = listJours;
+    listJoursSelector.innerHTML = listJours;
 }
 
 function changeTextWithTransition(elem, textToDisplay) {
@@ -87,7 +110,7 @@ function changeTextWithTransition(elem, textToDisplay) {
 
 function changeBGC(elem){
     if(elem.style.boxShadow == ""){
-        elem.style.boxShadow = "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset";
+        elem.style.boxShadow = shadowColorGrey;
         localStorage.setItem(elem.id, "sport")
     }
     else
