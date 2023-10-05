@@ -35,17 +35,13 @@ moisSelector.innerHTML = mois.find(x=> x.Id === moisAffiché).Name;
 //Generation calendrier
 genererCalendrier();
 
-highLightToday();
-
 //Gestion de la localStorage
 const testLS = localStorage.getItem("test");
 
 
 
 function highLightToday() {
-
     let days = listJoursSelector.children;
-
     for (const day of days){
         if (!day.classList.contains('inactive')){
             if (day.id === todaysDate){
@@ -98,6 +94,8 @@ function genererCalendrier() {
 
     //On met à jour les données à afficher.
     listJoursSelector.innerHTML = listJours;
+
+    highLightToday();
 }
 
 function changeTextWithTransition(elem, textToDisplay) {
