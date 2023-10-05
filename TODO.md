@@ -11,9 +11,9 @@
 
 [Js]
     - Selection de la date du jour
-    - De Décembre à janvier, et inversement, changer d'année
+    + De Décembre à janvier, et inversement, changer d'année
     - Retenir ce qui est coché
-    - Quand je clic sur mois => il faut que seul le mois soit animé. Idem pour année
+    + Quand je clic sur mois => il faut que seul le mois soit animé. Idem pour année
     - Optimiser/Améliorer/Nettoyer code
 
 
