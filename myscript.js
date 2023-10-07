@@ -27,8 +27,6 @@ const mois = [
     {Id:11, Name:"Décembre"}
 ]
 
-var imageSVG = new Image();
-imageSVG.src = "Icons/xmark-solid.svg"
 ////////////////////////////////////////////////////////
 
 //Generation header
