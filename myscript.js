@@ -10,7 +10,7 @@ let today = date.getDate();
 let moisAffiché = date.getMonth();
 let annéeAffichée = date.getFullYear();
 
-let todaysDate = today.toString() + moisAffiché.toString() + annéeAffichée.toString();
+let todaysDate = annéeAffichée.toString() + moisAffiché.toString().padStart(2, '0') + today.toString().padStart(2, '0');
 
 const mois = [
     {Id:0, Name:"Janvier"}, 
@@ -28,6 +28,8 @@ const mois = [
 ]
 
     
+////////////////////////////////////////////////////////
+
 //Generation header
 annéeSelector.innerHTML = annéeAffichée;
 moisSelector.innerHTML = mois.find(x=> x.Id === moisAffiché).Name;
@@ -35,9 +37,34 @@ moisSelector.innerHTML = mois.find(x=> x.Id === moisAffiché).Name;
 //Generation calendrier
 genererCalendrier();
 
-//Gestion de la localStorage
-const testLS = localStorage.getItem("test");
 
+////////////////////////////////////////////////////////
+function isThisDayBeenSelected(){
+    var elementsDuMois = [];
+    //D'abord récupérer toutes les clefs de ce mois/année
+    for (var i = 0; i < localStorage.length; i++) {
+        var cle = localStorage.key(i); // Obtenir la clé de l'élément
+        if (cle.slice(0, 4) != annéeAffichée.toString()) continue;
+        if (cle.slice(4, 6) != moisAffiché.toString().padStart(2, '0')) continue;
+        if (localStorage.getItem(cle) == "sport")
+            elementsDuMois.push(cle);
+    }
+
+    for (let elem of elementsDuMois){
+        document.getElementById(elem).style.boxShadow = shadowColorGrey;
+    }
+}
+
+function onDayClickAction(elem){
+    if(elem.style.boxShadow == ""){
+        elem.style.boxShadow = shadowColorGrey;
+        localStorage.setItem(elem.id, "sport")
+    }
+    else{
+        elem.style.boxShadow = "";
+        localStorage.removeItem(elem.id)
+    }
+}
 
 
 function highLightToday() {
@@ -51,7 +78,6 @@ function highLightToday() {
     }
 
 }
-
 
 function genererCalendrier() {
     let listJours = "";
@@ -68,34 +94,35 @@ function genererCalendrier() {
 
     //On construit les jours du mois précedent
         //ici on fait +2 car notre semaine commence le lundi et non le dimanche
-    let idPartPre = (moisAffiché - 1).toString() + annéeAffichée.toString();
+    let idPartPre = annéeAffichée.toString() + (moisAffiché - 1).toString().padStart(2, '0');
     if (moisAffiché == 0)
-        idPartPre = 11 + (annéeAffichée - 1).toString();
+        idPartPre = (annéeAffichée - 1).toString() + "11";
     for(let i = premierJourMois; i > 1; i--){
-        let numJourCase = (dernierJourNbrMoisPrecedent - i + 2);
-        listJours += '<li id="' + numJourCase.toString() + idPartPre + '" class="inactive">' + numJourCase + "</li>";
+        let numJourCase = (dernierJourNbrMoisPrecedent - i + 2).toString().padStart(2, '0');
+        listJours += '<li id="' +  idPartPre + numJourCase + '" class="inactive">' + numJourCase + "</li>";
     }
     
     //On construit les jours du mois en cours
-    let idPart = moisAffiché.toString() + annéeAffichée.toString();
+    let idPart = annéeAffichée.toString() + moisAffiché.toString().padStart(2, '0');
     for(let i = 1; i <= dernierJourNbrMois; i++){
         let numJourCase = i;
-        listJours += '<li id="' + numJourCase.toString() + idPart.toString() + '" onClick="changeBGC(this)">' + numJourCase + "</li>";
+        listJours += '<li id="' + idPart.toString() + numJourCase.toString().padStart(2, '0')  + '" onClick="onDayClickAction(this)">' + numJourCase + "</li>";
     }
     
     //On construit les jours du mois à venir
-    let idPartNext = (moisAffiché + 1).toString() + annéeAffichée.toString();
+    let idPartNext =  annéeAffichée.toString() + (moisAffiché + 1).toString().padStart(2, '0');
     if (moisAffiché == 11)
-        idPartNext = 0 + toString(annéeAffichée + 1);
+        idPartNext = toString(annéeAffichée + 1) + "00";
     for(let i = dernierJourMois; i < 7; i++){
         let numJourCase = (i - dernierJourMois + 1);
-        listJours += '<li id="' + numJourCase.toString() + idPartNext +'" class="inactive">' + numJourCase + "</li>";
+        listJours += '<li id="' + idPartNext + numJourCase.toString().padStart(2, '0') +'" class="inactive">' + numJourCase + "</li>";
     }
 
     //On met à jour les données à afficher.
     listJoursSelector.innerHTML = listJours;
 
     highLightToday();
+    isThisDayBeenSelected();
 }
 
 function changeTextWithTransition(elem, textToDisplay) {
@@ -104,15 +131,6 @@ function changeTextWithTransition(elem, textToDisplay) {
         elem.innerHTML = textToDisplay;
         elem.style.opacity = 1;
     }, 200); // Attendre pour que l'opacité atteigne 0 avant de changer le texte
-}
-
-function changeBGC(elem){
-    if(elem.style.boxShadow == ""){
-        elem.style.boxShadow = shadowColorGrey;
-        localStorage.setItem(elem.id, "sport")
-    }
-    else
-        elem.style.boxShadow = "";
 }
 
 function prevYear(elem){
