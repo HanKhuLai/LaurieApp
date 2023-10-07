@@ -74,6 +74,10 @@ header{
 }
 
 #jours li{
+    user-select: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     cursor: pointer;
     display: flex;
     justify-content: center;

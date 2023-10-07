@@ -27,7 +27,8 @@ const mois = [
     {Id:11, Name:"Décembre"}
 ]
 
-    
+var imageSVG = new Image();
+imageSVG.src = "Icons/xmark-solid.svg"
 ////////////////////////////////////////////////////////
 
 //Generation header
@@ -40,29 +41,47 @@ genererCalendrier();
 
 ////////////////////////////////////////////////////////
 function isThisDayBeenSelected(){
-    var elementsDuMois = [];
+    var elementsDuMoisSport = [];
+    var elementsDuMoisBoth = [];
     //D'abord récupérer toutes les clefs de ce mois/année
     for (var i = 0; i < localStorage.length; i++) {
         var cle = localStorage.key(i); // Obtenir la clé de l'élément
         if (cle.slice(0, 4) != annéeAffichée.toString()) continue;
         if (cle.slice(4, 6) != moisAffiché.toString().padStart(2, '0')) continue;
-        if (localStorage.getItem(cle) == "sport")
-            elementsDuMois.push(cle);
+        if (localStorage.getItem(cle) == "sport"){
+            elementsDuMoisSport.push(cle);
+            continue;
+        }
+        if (localStorage.getItem(cle) == "both"){
+            elementsDuMoisBoth.push(cle);
+            continue;
+        }
     }
 
-    for (let elem of elementsDuMois){
-        document.getElementById(elem).style.boxShadow = shadowColorGrey;
+    for (let elem of elementsDuMoisSport){
+        document.getElementById(elem).style.backgroundImage = 'url(' + "Icons/xmark-solid-1.svg" + ')';
+    }
+
+    for (let elem of elementsDuMoisBoth){
+        document.getElementById(elem).style.backgroundImage = 'url(' + "Icons/xmark-solid-2.svg" + ')';
     }
 }
 
+
 function onDayClickAction(elem){
-    if(elem.style.boxShadow == ""){
-        elem.style.boxShadow = shadowColorGrey;
+    if(elem.style.backgroundImage == '' || elem.style.backgroundImage == 'none'){
+        // elem.style.boxShadow = shadowColorGrey;
+        elem.style.backgroundImage = 'url(' + "Icons/xmark-solid-1.svg" + ')';
         localStorage.setItem(elem.id, "sport")
     }
+    else if(elem.style.backgroundImage == 'url(' + "\"Icons/xmark-solid-1.svg\"" + ')'){
+        elem.style.backgroundImage = 'url(' + "Icons/xmark-solid-2.svg" + ')';
+        localStorage.setItem(elem.id, "both")
+    }
     else{
-        elem.style.boxShadow = "";
+        elem.style.backgroundImage = 'none';
         localStorage.removeItem(elem.id)
+
     }
 }
 
