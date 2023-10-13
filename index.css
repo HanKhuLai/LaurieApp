@@ -68,10 +68,10 @@ header{
 }
 
 .calendrier li{
-    color: #333;
+    color: #131313;
     width: calc(100% / 7);
     aspect-ratio: 1/1;
-    font-size: 1,07rem;
+    font-size: 1.07rem;
 }
 
 #jours li{
@@ -87,5 +87,6 @@ header{
 }
 
 .inactive{
+    text-shadow: none !important;
     color: lightgray !important;
 }

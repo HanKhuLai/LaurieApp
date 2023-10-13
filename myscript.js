@@ -70,6 +70,8 @@ function onDayClickAction(elem){
     if(elem.style.backgroundImage == '' || elem.style.backgroundImage == 'none'){
         // elem.style.boxShadow = shadowColorGrey;
         elem.style.backgroundImage = 'url(' + "Icons/xmark-solid-1.svg" + ')';
+        elem.style.color = 'white';
+        elem.style.textShadow = "rgba(50, 50, 93, 1) 0px 0px 3px";
         localStorage.setItem(elem.id, "sport")
     }
     else if(elem.style.backgroundImage == 'url(' + "\"Icons/xmark-solid-1.svg\"" + ')'){
@@ -78,6 +80,8 @@ function onDayClickAction(elem){
     }
     else{
         elem.style.backgroundImage = 'none';
+        elem.style.color = 'black';
+        elem.style.textShadow = "none";
         localStorage.removeItem(elem.id)
 
     }
